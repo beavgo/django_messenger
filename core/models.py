@@ -1,4 +1,3 @@
-from distutils.command.upload import upload
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
@@ -15,13 +14,27 @@ class Profile(models.Model):
         return f'Profile for user {self.user.username}'
 
 
+class Chat(models.Model):
+    DIALOG = 'D'
+    GROUP = 'G'
+    CHAT_TYPES_CHOICES = (
+        (DIALOG, 'Dialog'),
+        (GROUP, 'Group'),
+    )
+    title = models.CharField(max_length=250)
+    kind = models.CharField(max_length=1,
+                            choices=CHAT_TYPES_CHOICES,
+                            default=DIALOG)
+    members = models.ManyToManyField(User, related_name='member')
+
+
 class Message(models.Model):
+    chat = models.ForeignKey(Chat,
+                             on_delete=models.CASCADE,
+                             related_name='chat')
     sender = models.ForeignKey(User, 
                                on_delete=models.CASCADE,
                                related_name='sender')
-    recipient = models.ForeignKey(User,
-                                  on_delete=models.CASCADE,
-                                  related_name='recipient')
     message_text = models.TextField()
     sent = models.DateTimeField(default=timezone.now)
 
@@ -29,4 +42,4 @@ class Message(models.Model):
         ordering = ['sent']
 
     def __str__(self):
-        return f'From: {self.sender}\nTo: {self.recipient}\nAt: {self.sent}'
+        return f'From: {self.sender}\nAt: {self.sent}\nIn: {self.chat}'

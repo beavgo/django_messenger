@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile, Message
+from .models import Profile, Message, Chat
 
 
 @admin.register(Profile)
@@ -9,4 +9,9 @@ class ProfileAdmin(admin.ModelAdmin):
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
-    list_display = ['sender', 'recipient', 'message_text', 'sent']
+    list_display = ['chat', 'sender', 'message_text', 'sent']
+
+
+@admin.register(Chat)
+class ChatAdmin(admin.ModelAdmin):
+    list_display = ['title', 'kind']
