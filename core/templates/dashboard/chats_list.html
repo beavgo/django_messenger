@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}Чаты{% endblock %}
+
+{% block content %}
+    <h1>Чаты</h1>
+    {% for chat in chats %}
+        {{ chat.title }}
+    {% endfor %}
+{% endblock %}
