@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    {% for message in messages %}
+        <p>
+            {{message.message_text}}
+            {{message.sender}}
+            {{message.sent}}
+        </p>
+    {% endfor %}
+{% endblock %}

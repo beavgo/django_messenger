@@ -5,6 +5,8 @@
 {% block content %}
     <h1>Чаты</h1>
     {% for chat in chats %}
-        {{ chat.title }}
+        <a href="{% url 'chat-detail' chat.slug %}">
+            {{ chat.title }}
+        </a>
     {% endfor %}
 {% endblock %}

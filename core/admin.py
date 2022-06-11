@@ -14,4 +14,5 @@ class MessageAdmin(admin.ModelAdmin):
 
 @admin.register(Chat)
 class ChatAdmin(admin.ModelAdmin):
-    list_display = ['title', 'kind']
+    list_display = ['title', 'kind', 'slug']
+    prepopulated_fields = {'slug': ('title',)}

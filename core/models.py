@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 class Profile(models.Model):
@@ -26,6 +27,10 @@ class Chat(models.Model):
                             choices=CHAT_TYPES_CHOICES,
                             default=DIALOG)
     members = models.ManyToManyField(User, related_name='member')
+    slug = models.SlugField(max_length=100, )
+
+    def get_absolute_url(self):
+        return reverse('chat-detail', kwargs={'url':self.slug})
 
 
 class Message(models.Model):
