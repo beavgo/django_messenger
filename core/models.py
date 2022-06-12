@@ -16,6 +16,9 @@ class Profile(models.Model):
 
 
 class Chat(models.Model):
+    '''Модель представления чата, имеет два варианта реализации:
+       диалог - для общения двух пользователей, и группа, где 
+       количество пользователей больше двух'''
     DIALOG = 'D'
     GROUP = 'G'
     CHAT_TYPES_CHOICES = (
@@ -31,9 +34,14 @@ class Chat(models.Model):
 
     def get_absolute_url(self):
         return reverse('chat-detail', kwargs={'url':self.slug})
+    
+    def __str__(self):
+        return f'{self.title}'
 
 
 class Message(models.Model):
+    '''Модель представления сообщения. Каждое сообщение связано
+       только с одним чатом и одним пользователем'''
     chat = models.ForeignKey(Chat,
                              on_delete=models.CASCADE,
                              related_name='chat')

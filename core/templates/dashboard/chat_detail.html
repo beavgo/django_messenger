@@ -11,4 +11,10 @@
             {{message.sent}}
         </p>
     {% endfor %}
+    <h2>Написать сообщение</h2>
+    <form action="." method="post">
+        {% csrf_token %}
+        {{ message_form.as_p }}
+        <input type="submit" value="Отправить">
+    </form>
 {% endblock %}
