@@ -4,9 +4,14 @@
 
 {% block content %}
     <h1>Чаты</h1>
-    {% for chat in chats %}
-        <a href="{% url 'chat-detail' chat.slug %}">
-            {{ chat.title }}
-        </a>
-    {% endfor %}
+    {% if boolean %}
+        {% for chat in chats %}
+            <a href="{% url 'chat-detail' chat.slug %}">
+                {{ chat.title }}
+            </a>
+            <br>
+        {% endfor %}
+    {% else %}
+        <h2>Пока здесь нет чатов.</h2>
+    {% endif %}
 {% endblock %}

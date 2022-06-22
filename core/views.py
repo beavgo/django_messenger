@@ -1,26 +1,38 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Chat, Message
-from .forms import MessageForm
+from transliterate import translit
+from .models import Chat, Message, Profile
+from django.contrib.auth.models import User
+from .forms import MessageCreateForm, ProfileCreateForm
 
 
 @login_required
 def chats_list(request):
-    chats = Chat.objects.all()
-    return render(request, 
-                  'dashboard/chats_list.html',
-                  {'chats': chats})
+    # Фильтруем чаты, в которых есть авторизованный пользователь
+    chats = Chat.objects.filter(members__in=[request.user.id])
+
+    # Если есть чаты у пользователя, то выводим их, иначе
+    # информируем об их отсутствии с помоощью bool-переменной
+    if chats.exists():
+        return render(request,
+                      'dashboard/chats_list.html',
+                      {'chats': chats,
+                       'boolean': True})
+    else:
+        return render(request,
+                      'dashboard/chats_list.html',
+                      {'boolean': False})
 
 
 @login_required
-def chat_page(request, url):
+def get_chat(request, url):
     chat = get_object_or_404(Chat, slug=url)
     messages = Message.objects.filter(chat=chat)
 
     if request.method == 'POST':
         # Создание и отправка сообщения
-        message_form = MessageForm(data=request.POST)
-        if message_form.is_valid:
+        message_form = MessageCreateForm(data=request.POST)
+        if message_form.is_valid():
             # Создание сообщения, но без сохранения в БД
             new_message = message_form.save(commit=False)
             new_message.chat = chat
@@ -28,11 +40,40 @@ def chat_page(request, url):
             # Сохранение сообщения в БД
             new_message.save()
     else:
-        message_form = MessageForm()
+        message_form = MessageCreateForm()
     
     return render(request, 
                   'dashboard/chat_detail.html',
-                  {'messages':messages,
-                   'title':chat.title,
+                  {'messages': messages,
+                   'title': chat.title,
                    'url': url,
                    'message_form': message_form})
+
+
+@login_required
+def create_profile(request):
+    if request.method == 'POST':
+        profile_form = ProfileCreateForm(data=request.POST, files=request.FILES)
+        if profile_form.is_valid():
+            new_profile = profile_form.save(commit=False)
+            # Прикрепляем пользователя к профилю
+            new_profile.user = request.user
+            new_profile.save()
+            return redirect("/")
+    else:
+        profile_form = ProfileCreateForm()
+    
+    return render(request,
+                  'registration/profile_creation.html',
+                  {'profile_form': profile_form})
+
+
+def get_profile(request, username):
+    user = User.objects.get(username=username)
+    # Получаем объект профиля, используя имя пользователя
+    profile = Profile.objects.get(user=user)
+
+    return render(request,
+                  'registration/profile_page.html',
+                  {'profile': profile,
+                   'username': username})

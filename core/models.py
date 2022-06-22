@@ -6,9 +6,13 @@ from django.urls import reverse
 
 
 class Profile(models.Model):
+    '''Модель представления профиля пользователя.
+       Объект модели профиля связан с объектом модели
+       пользователя связью типа Один-к-Одному.'''
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE)
-    picture = models.ImageField(upload_to='media/avatars/', blank=True)
+    name = models.CharField(max_length=350)
+    picture = models.ImageField(upload_to='avatars/', blank=True, null=True)
     status = models.CharField(max_length=250, null=True)
 
     def __str__(self):
@@ -30,7 +34,7 @@ class Chat(models.Model):
                             choices=CHAT_TYPES_CHOICES,
                             default=DIALOG)
     members = models.ManyToManyField(User, related_name='member')
-    slug = models.SlugField(max_length=100, )
+    slug = models.SlugField(max_length=100)
 
     def get_absolute_url(self):
         return reverse('chat-detail', kwargs={'url':self.slug})

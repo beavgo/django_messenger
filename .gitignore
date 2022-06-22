@@ -4,5 +4,6 @@
 *.pyc
 __pycache__
 migrations
+media
 db.sqlite3
 settings.py
