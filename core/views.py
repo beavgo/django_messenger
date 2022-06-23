@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from transliterate import translit
 from .models import Chat, Message, Profile
 from django.contrib.auth.models import User
-from .forms import MessageCreateForm, ProfileCreateForm
+from .forms import MessageCreateForm, ProfileCreateForm, UserRegistrationForm
 
 
 @login_required
@@ -77,3 +77,20 @@ def get_profile(request, username):
                   'registration/profile_page.html',
                   {'profile': profile,
                    'username': username})
+
+
+def register_user(request):
+    if request.method == 'POST':
+        user_form = UserRegistrationForm(data=request.POST)
+
+        if user_form.is_valid():
+            new_user = user_form.save(commit=False)
+            # Устанавливаем пароль пользователя
+            new_user.set_password(user_form.cleaned_data['password'])
+            new_user.save()
+    else:
+        user_form = UserRegistrationForm()
+    
+    return render(request,
+                  'registration/user_registration.html',
+                  {'user_form': user_form})

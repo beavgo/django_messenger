@@ -11,7 +11,7 @@ class Profile(models.Model):
        пользователя связью типа Один-к-Одному.'''
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE)
-    name = models.CharField(max_length=350)
+    date_of_birth = models.DateField(blank=True, null=True)
     picture = models.ImageField(upload_to='avatars/', blank=True, null=True)
     status = models.CharField(max_length=250, null=True)
 

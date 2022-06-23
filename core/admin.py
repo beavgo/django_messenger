@@ -4,7 +4,7 @@ from .models import Profile, Message, Chat
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ['user', 'name', 'status', 'picture']
+    list_display = ['user', 'status', 'picture']
 
 
 @admin.register(Message)

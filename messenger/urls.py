@@ -8,6 +8,7 @@ from core import views
 urlpatterns = [
     path('', views.chats_list, name='chats'),
     path('admin/', admin.site.urls),
+    path('register/', views.register_user),
     path('profile/create/', views.create_profile),
     path('profile/<str:username>', views.get_profile),
     path('<slug:url>/', views.get_chat, name='chat-detail'),

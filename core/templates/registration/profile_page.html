@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ profile.name }}{% endblock %}
+{% block title %}{{ profile.user.first_name }} {{ profile.user.last_name }}{% endblock %}
 
 {% block content %}
-    <h2>{{ profile.name }}</h2>
+    <h2>{{ profile.user.first_name }} {{ profile.user.last_name }}</h2>
+    <h3>{{ profile.date_of_birth }}</h3>
     <h4>{{ profile.status }}</h4>
     <img src="{{ profile.picture.url }}" alt="Изображение профиля">  
 {% endblock %}
