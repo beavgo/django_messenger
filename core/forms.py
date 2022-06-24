@@ -35,3 +35,9 @@ class UserRegistrationForm(forms.ModelForm):
         if cd['password'] != cd['password2']:
             raise forms.ValidationError('Passwords don\'t match.')
         return cd['password2']
+
+
+class LoginForm(forms.Form):
+    '''Форма для авторизации пользователя'''
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
