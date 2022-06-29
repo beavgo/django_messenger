@@ -12,7 +12,7 @@ from django.contrib.auth import authenticate, login
 def chats_list(request):
     # Фильтруем чаты, в которых есть авторизованный пользователь
     chats = Chat.objects.filter(members__in=[request.user.id])
-
+    
     # Если есть чаты у пользователя, то выводим их, иначе
     # информируем об их отсутствии с помоощью bool-переменной
     if chats.exists():

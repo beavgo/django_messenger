@@ -1,0 +1,19 @@
+body, html{height:100%}
+
+.div {
+    min-width: 100%;
+}
+
+#header {
+    height: 15%;
+    background-color: coral;
+}
+
+#content {
+    height: 50%;
+    text-align: center;
+}
+
+.text-dark {
+    text-decoration: none;
+}

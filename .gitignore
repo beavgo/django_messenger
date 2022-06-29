@@ -7,3 +7,4 @@ migrations
 media
 db.sqlite3
 settings.py
+TODO.txt
